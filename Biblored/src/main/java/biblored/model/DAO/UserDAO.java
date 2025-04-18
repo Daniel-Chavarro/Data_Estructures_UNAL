@@ -32,6 +32,11 @@ public class UserDAO implements InterfaceDAO<User> {
     }
 
     @Override
+    public ArrayList<User> readAll() {
+        return users;
+    }
+
+    @Override
     public boolean update(int id, User user) {
         User found = read(id);
         if (found != null) {

@@ -5,16 +5,16 @@ import biblored.model.generic.Material;
 import java.util.ArrayList;
 
 public class MaterialDAO implements InterfaceDAO<Material>{
-    private ArrayList<Material> books = new ArrayList<Material>();
-    
+    private ArrayList<Material> materials = new ArrayList<Material>();
+
     public MaterialDAO() {
-        books = new ArrayList<Material>();
+        materials = new ArrayList<Material>();
     }
-    
+
     @Override
     public boolean add(Material material) {
         if(read(material.getId()) == null) {
-            books.add(material);
+            materials.add(material);
             return true;
         }
         return false;
@@ -23,12 +23,17 @@ public class MaterialDAO implements InterfaceDAO<Material>{
     @Override
     public Material read(int id) {
         Material material = null;
-        for (Material b : books) {
+        for (Material b : materials) {
             if (b.getId() == id) {
                 material = b;
             }
         }
         return material;
+    }
+
+    @Override
+    public ArrayList<Material> readAll() {
+        return materials;
     }
 
     @Override
@@ -50,7 +55,7 @@ public class MaterialDAO implements InterfaceDAO<Material>{
     public boolean delete(int id) {
         Material found = read(id);
         if (found != null) {
-            books.remove(found);
+            materials.remove(found);
             return true;
         }
         return false;

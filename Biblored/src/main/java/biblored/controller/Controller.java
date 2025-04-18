@@ -16,4 +16,6 @@ public class Controller {
     public void setConsole(ConsoleView console) {
         this.console = console;
     }
+
+    
 }

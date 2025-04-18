@@ -32,6 +32,11 @@ public class LibraryDAO implements InterfaceDAO<Library>{
     }
 
     @Override
+    public ArrayList<Library> readAll() {
+        return libraries;
+    }
+
+    @Override
     public boolean update(int id , Library library) {
         Library found = read(id);
         if (found != null) {
