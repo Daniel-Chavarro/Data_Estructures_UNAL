@@ -74,27 +74,48 @@ public class User {
         this.borrowedMaterial = material;
     }
 
-    private Material getBorrowedMaterial() {
+    public Material getBorrowedMaterial() {
         return borrowedMaterial;
     }
 
+    /**
+     * Borrows a material from a library
+     * @param material The material to borrow
+     */
     public void borrowMaterial(Material material) {
         if (borrowedMaterial == null) {
-            setBorrowedMaterial(material);
-            material.setStatus(Status.RESERVED);
+            // Get the library that owns the material
+            Library library = material.getLibrary();
 
-            System.out.println("Material borrowed successfully.");
+            // Process the borrowing through the library
+            Material borrowedMaterial = library.borrowMaterial(material, this);
+
+            // If the status was changed to RESERVED, the borrowing was successful
+            if (borrowedMaterial.getStatus() == Status.RESERVED) {
+                setBorrowedMaterial(borrowedMaterial);
+                System.out.println("User " + name + " has borrowed the material successfully.");
+            }
         } else {
             System.out.println("You already have a borrowed material.");
         }
     }
 
+    /**
+     * Returns the currently borrowed material
+     */
     public void returnMaterial() {
         if (borrowedMaterial != null) {
-            borrowedMaterial.setStatus(Status.AVAILABLE);
-            setBorrowedMaterial(null);
+            // Get the library that owns the material
+            Library library = borrowedMaterial.getLibrary();
 
-            System.out.println("Material returned successfully.");
+            // Process the return through the library
+            Material returnedMaterial = library.returnMaterial(borrowedMaterial);
+
+            // If the status was changed to AVAILABLE, the return was successful
+            if (returnedMaterial.getStatus() == Status.AVAILABLE) {
+                setBorrowedMaterial(null);
+                System.out.println("User " + name + " has returned the material successfully.");
+            }
         } else {
             System.out.println("You have no borrowed material.");
         }
