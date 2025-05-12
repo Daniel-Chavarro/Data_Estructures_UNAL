@@ -28,14 +28,4 @@ public class ListCreator implements FactoryList {
                 throw new IllegalArgumentException("Invalid linked list type");
         }
     }
-
-    /**
-     * Creates an ArrayList.
-     * @param <T> the type of elements in the ArrayList
-     * @return a new ArrayList
-     */
-    @Override
-    public <T> ArrayList<T> createArrayList() {
-        return new ArrayList<>();
-    }
 }

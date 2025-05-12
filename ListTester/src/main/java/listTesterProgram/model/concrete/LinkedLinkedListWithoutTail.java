@@ -56,10 +56,11 @@ public class LinkedLinkedListWithoutTail<T> implements LinkedList<T> {
      */
     @Override
     public void pushBack(T value) {
-        Node<T> newNode = new Node<>(value);
         if (isEmpty()) {
             pushFront(value);
+            return;
         }
+        Node<T> newNode = new Node<>(value);
 
         Node<T> current = head;
         while (current.next != null) {
@@ -102,14 +103,21 @@ public class LinkedLinkedListWithoutTail<T> implements LinkedList<T> {
         }
 
         Node<T> current = head;
-        while (current.next.next != null) {
-            current = current.next;
-        }
+        if (current.next == null) {
+            T value = current.value;
+            head = null;
+            size--;
+            return value;
+        } else {
+            while (current.next.next != null) {
+                current = current.next;
+            }
 
-        Node<T> temp = current.next;
-        current.next = null;
-        size--;
-        return temp.value;
+            Node<T> temp = current.next;
+            current.next = null;
+            size--;
+            return temp.value;
+        }
     }
 
     /**
@@ -194,7 +202,7 @@ public class LinkedLinkedListWithoutTail<T> implements LinkedList<T> {
      * @param node  the node before which the new node will be added
      * @param value the value to be added
      * @throws IllegalArgumentException if the node is null
-     * @throws NoSuchElementException if the node is not found in the list
+     * @throws NoSuchElementException   if the node is not found in the list
      */
     @Override
     public void addBefore(Node<T> node, T value) {
@@ -219,5 +227,22 @@ public class LinkedLinkedListWithoutTail<T> implements LinkedList<T> {
         }
 
         size++;
+    }
+
+    /**
+     * Transforms the list into a string representation
+     * Complexity: O(N)
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<T> current = head;
+        while (current != null) {
+            sb.append(current.value).append(" ");
+            current = current.next;
+        }
+        sb.append("]");
+        return sb.toString().trim();
     }
 }
