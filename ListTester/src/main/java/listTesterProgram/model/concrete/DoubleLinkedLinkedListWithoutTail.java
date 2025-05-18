@@ -209,4 +209,21 @@ public class DoubleLinkedLinkedListWithoutTail<T> implements LinkedList<T> {
         size++;
 
     }
+
+    /**
+     * Transforms the list into a string representation
+     * Complexity: O(N)
+     * */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<T> current = head;
+        while (current != null) {
+            sb.append(current.value).append(" ");
+            current = current.next;
+        }
+        sb.append("]");
+        return sb.toString().trim();
+    }
 }

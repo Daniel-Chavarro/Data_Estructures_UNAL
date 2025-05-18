@@ -63,7 +63,8 @@ public class LinkedLinkedListWithTail<T> implements LinkedList<T> {
     public void pushBack(T value) {
         Node<T> newNode = new Node<>(value);
         if (isEmpty()) {
-            pushFront(value);
+            head = newNode;
+            tail = newNode;
         } else {
             tail.next = newNode;
             tail = newNode;
@@ -230,5 +231,22 @@ public class LinkedLinkedListWithTail<T> implements LinkedList<T> {
         current.next = newNode;
         size++;
 
+    }
+
+    /**
+     * Transforms the list into a string representation
+     * Complexity: O(N)
+     * */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<T> current = head;
+        while (current != null) {
+            sb.append(current.value).append(" ");
+            current = current.next;
+        }
+        sb.append("]");
+        return sb.toString().trim();
     }
 }
