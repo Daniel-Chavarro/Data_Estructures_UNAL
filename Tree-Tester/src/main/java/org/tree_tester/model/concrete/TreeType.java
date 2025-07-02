@@ -5,8 +5,7 @@ public enum TreeType {
     BST("Binary Search Tree"),
     AVL("AVL Tree"),
     MIN_HEAP("Min Heap"),
-    MAX_HEAP("Max Heap"),
-    D_ARY_HEAP("D-ary Heap");
+    MAX_HEAP("Max Heap");
 
 
     private final String DESCRIPTION;
