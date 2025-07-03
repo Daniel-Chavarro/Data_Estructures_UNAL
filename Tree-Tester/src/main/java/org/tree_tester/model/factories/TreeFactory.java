@@ -24,9 +24,9 @@ public class TreeFactory {
     public static <T extends Comparable<T>>Heap<T> createHeap(TreeType treeType, int degree) {
         switch (treeType) {
             case MIN_HEAP:
-                return new DaryMinHeap<T>(degree);
+                return new DaryMinHeap<>(degree);
             case MAX_HEAP:
-                return new DaryMaxHeap<T>(degree);
+                return new DaryMaxHeap<>(degree);
             default:
                 throw new IllegalArgumentException("Unsupported Heap type: " + treeType);
         }

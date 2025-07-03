@@ -29,9 +29,9 @@ public class AVLTree<T extends Comparable<T>> extends Tree<T> {
      */
     @Override
     public boolean insert(T data) {
-        boolean inserted = false;
+        boolean[] inserted = {false};
         root = insert(root, data, null, inserted);
-        return inserted;
+        return inserted[0];
     }
 
     /**
@@ -40,12 +40,12 @@ public class AVLTree<T extends Comparable<T>> extends Tree<T> {
      * @param node     the current node in the tree
      * @param data     the element to be inserted
      * @param parent   the parent node of the current node
-     * @param inserted a flag indicating whether the element was inserted
+     * @param inserted a flag array indicating whether the element was inserted
      * @return the new node if inserted, or the existing node if not
      */
-    private Node<T> insert(Node<T> node, T data, Node<T> parent, boolean inserted) {
+    private Node<T> insert(Node<T> node, T data, Node<T> parent, boolean[] inserted) {
         if (node == null) {
-            inserted = true;
+            inserted[0] = true;
             size++;
             return new Node<>(data, parent);
         }
@@ -67,9 +67,9 @@ public class AVLTree<T extends Comparable<T>> extends Tree<T> {
      */
     @Override
     public boolean delete(T data) {
-        boolean deleted = false;
+        boolean[] deleted = {false}; // Array para simular paso por referencia
         root = delete(root, data, deleted);
-        return deleted;
+        return deleted[0];
     }
 
     /**
@@ -77,10 +77,10 @@ public class AVLTree<T extends Comparable<T>> extends Tree<T> {
      *
      * @param node    the current node in the tree
      * @param data    the element to be deleted
-     * @param deleted a flag indicating whether the element was deleted
+     * @param deleted a flag array indicating whether the element was deleted
      * @return the new root of the subtree after deletion
      */
-    private Node<T> delete(Node<T> node, T data, boolean deleted) {
+    private Node<T> delete(Node<T> node, T data, boolean[] deleted) {
         if (node == null) {
             return null;
         }
@@ -90,7 +90,7 @@ public class AVLTree<T extends Comparable<T>> extends Tree<T> {
         } else if (data.compareTo(node.data) > 0) {
             node.right = delete(node.right, data, deleted);
         } else {
-            deleted = true;
+            deleted[0] = true;
             size--;
             if (node.left == null) {
                 return node.right;
@@ -99,7 +99,37 @@ public class AVLTree<T extends Comparable<T>> extends Tree<T> {
             }
             Node<T> minNode = findMin(node.right);
             node.data = minNode.data;
-            node.right = delete(node.right, minNode.data, deleted);
+            node.right = deleteSuccessor(node.right, minNode.data);
+        }
+
+        adjustHeight(node);
+        return balance(node);
+    }
+
+    /**
+     * Helper method to delete the successor node without affecting the size count.
+     * This is used when replacing a node with two children.
+     */
+    private Node<T> deleteSuccessor(Node<T> node, T data) {
+        if (node == null) {
+            return null;
+        }
+
+        if (data.compareTo(node.data) < 0) {
+            node.left = deleteSuccessor(node.left, data);
+        } else if (data.compareTo(node.data) > 0) {
+            node.right = deleteSuccessor(node.right, data);
+        } else {
+            // Found the successor to delete - don't decrement size
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
+            }
+            // This shouldn't happen as we're deleting the minimum (leftmost) node
+            Node<T> minNode = findMin(node.right);
+            node.data = minNode.data;
+            node.right = deleteSuccessor(node.right, minNode.data);
         }
 
         adjustHeight(node);

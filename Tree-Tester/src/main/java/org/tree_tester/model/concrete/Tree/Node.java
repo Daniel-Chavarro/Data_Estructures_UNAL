@@ -12,7 +12,7 @@ public class Node<T extends Comparable<T>> {
         this.left = null;
         this.right = null;
         this.parent = parent;
-        this.height = 1;
+        this.height = 0;
     }
 
     public T getData() {

@@ -3,8 +3,6 @@ package org.tree_tester.model.concrete.Tree;
 import org.tree_tester.model.Abstract.Tree;
 import org.tree_tester.model.concrete.TreeType;
 
-import java.util.List;
-
 public class BinarySearchTree <T extends Comparable<T>> extends Tree<T> {
     /**
      * Constructs an empty binary search tree.
@@ -22,37 +20,32 @@ public class BinarySearchTree <T extends Comparable<T>> extends Tree<T> {
      */
     @Override
     public boolean insert(T data) {
-        if (root == null) {
-            root = new Node<>(data, null);
-            return true;
-        }
-
-        boolean inserted = false;
+        boolean[] inserted = {false};
         root = insert(root, data, inserted);
-        return inserted;
+        return inserted[0];
     }
 
     /**
      * Inserts a new node with the given data into the tree.
      * @param node The current node to compare against.
      * @param data The data to insert.
-     * @param inserted A boolean flag indicating whether the insertion was successful.
+     * @param inserted A boolean array flag indicating whether the insertion was successful.
      * @return The updated node after insertion.
      */
-    private Node<T> insert(Node<T> node, T data, boolean inserted) {
+    private Node<T> insert(Node<T> node, T data, boolean[] inserted) {
         if (node == null){
-            inserted = true;
+            inserted[0] = true;
+            size++;
             return new Node<>(data, null);
         }
 
         if (data.compareTo(node.data) < 0) {
             node.left = insert(node.left, data, inserted);
-        }
-        if (data.compareTo(node.data) > 0) {
+        } else if (data.compareTo(node.data) > 0) {
             node.right = insert(node.right, data, inserted);
         }
 
-
+        adjustHeight(node);
         return node;
     }
 
@@ -67,19 +60,19 @@ public class BinarySearchTree <T extends Comparable<T>> extends Tree<T> {
             return false; // Tree is empty
         }
 
-        boolean deleted = false;
+        boolean[] deleted = {false};
         root = delete(root, data, deleted);
-        return deleted;
+        return deleted[0];
     }
 
     /**
      * Deletes a node with the specified data from the tree.
      * @param node The current node to compare against.
      * @param data The data to delete.
-     * @param deleted A boolean flag indicating whether the deletion was successful.
+     * @param deleted A boolean array flag indicating whether the deletion was successful.
      * @return The updated node after deletion.
      */
-    private Node<T> delete(Node<T> node, T data, boolean deleted) {
+    private Node<T> delete(Node<T> node, T data, boolean[] deleted) {
         if (node == null) {
             return null; // Data not found
         }
@@ -89,7 +82,8 @@ public class BinarySearchTree <T extends Comparable<T>> extends Tree<T> {
         } else if (data.compareTo(node.data) > 0) {
             node.right = delete(node.right, data, deleted);
         } else {
-            deleted = true; // Data found
+            deleted[0] = true; // Data found
+            size--;
             if (node.left == null) {
                 return node.right; // Node with only right child or no child
             } else if (node.right == null) {
@@ -99,7 +93,35 @@ public class BinarySearchTree <T extends Comparable<T>> extends Tree<T> {
             // Node with two children: get the inorder successor (smallest in the right subtree)
             Node<T> minNode = findMin(node.right);
             node.data = minNode.data; // Copy the inorder successor's value to this node
-            node.right = delete(node.right, minNode.data, deleted); // Delete the inorder successor
+            // Delete the inorder successor - but don't count this as a separate deletion
+            node.right = deleteSuccessor(node.right, minNode.data);
+        }
+        return node;
+    }
+
+    /**
+     * Helper method to delete the successor node without affecting the size count.
+     * This is used when replacing a node with two children.
+     */
+    private Node<T> deleteSuccessor(Node<T> node, T data) {
+        if (node == null) {
+            return null;
+        }
+
+        if (data.compareTo(node.data) < 0) {
+            node.left = deleteSuccessor(node.left, data);
+        } else if (data.compareTo(node.data) > 0) {
+            node.right = deleteSuccessor(node.right, data);
+        } else {
+
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
+            }
+
+            Node<T> minNode = findMin(node.right);
+            node.data = minNode.data;
         }
         return node;
     }
