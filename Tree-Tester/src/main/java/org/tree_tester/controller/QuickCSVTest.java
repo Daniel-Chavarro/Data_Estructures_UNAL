@@ -28,7 +28,6 @@ public class QuickCSVTest {
                 .include(TreeBenchmark.class.getSimpleName() + ".insertBenchmark")
                 .param("dataSize", "100", "1000")
                 .param("treeType", "AVL", "BST")
-                .threads(4) // Use all CPU cores
                 .forks(1)
                 .warmupIterations(1)
                 .measurementIterations(2)

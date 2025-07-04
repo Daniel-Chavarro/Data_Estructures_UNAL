@@ -95,16 +95,12 @@ public class BenchmarkController {
         
         try {
             view.println("Starting tree benchmarks...");
-            if (config.getThreads() > 1) {
-                view.println("Using " + config.getThreads() + " threads for faster execution...");
-            }
             view.println("This may take several minutes. Please wait...");
             
             Options opt = new OptionsBuilder()
                     .include(TreeBenchmark.class.getSimpleName())
                     .param("dataSize", config.getDataSizes())
                     .param("treeType", config.getTreeTypes())
-                    .threads(config.getThreads()) // Use configured threads
                     .forks(config.getForks())
                     .warmupIterations(config.getWarmupIterations())
                     .measurementIterations(config.getMeasurementIterations())
@@ -132,9 +128,6 @@ public class BenchmarkController {
         
         try {
             view.println("Starting heap benchmarks...");
-            if (config.getThreads() > 1) {
-                view.println("Using " + config.getThreads() + " threads for faster execution...");
-            }
             view.println("This may take several minutes. Please wait...");
             
             Options opt = new OptionsBuilder()
@@ -142,7 +135,6 @@ public class BenchmarkController {
                     .param("dataSize", config.getDataSizes())
                     .param("degree", config.getDegrees())
                     .param("heapType", config.getHeapTypes())
-                    .threads(config.getThreads()) // Use configured threads
                     .forks(config.getForks())
                     .warmupIterations(config.getWarmupIterations())
                     .measurementIterations(config.getMeasurementIterations())
@@ -269,7 +261,7 @@ public class BenchmarkController {
      */
     private String[] getValidatedDataSizesForHeaps() {
         view.println("Available data sizes for heaps:");
-        List<DataSize> heapSizes = Arrays.asList(DataSize.SMALL, DataSize.MEDIUM, DataSize.LARGE);
+        List<DataSize> heapSizes = Arrays.asList(DataSize.SMALL, DataSize.MEDIUM, DataSize.LARGE, DataSize.EXTRA_LARGE, DataSize.HUGE);
         view.println(heapSizes.stream()
                 .map(size -> size.getValue() + " (" + size.getDescription() + ")")
                 .collect(Collectors.joining(", ")));
@@ -489,20 +481,6 @@ public class BenchmarkController {
         
         int measurement = view.readInt("Measurement iterations (recommended 5): ");
         config.setMeasurementIterations(measurement);
-
-        // Ask about performance optimization
-        view.println("\n--- Performance optimization ---");
-        view.println("Do you want to enable multi-threading for faster execution? (y/n)");
-        String useThreads = view.readString("Response: ");
-
-        if (useThreads.toLowerCase().startsWith("y")) {
-            int availableCores = Runtime.getRuntime().availableProcessors();
-            view.println("Available CPU cores: " + availableCores);
-            int threads = view.readInt("Number of threads to use (enter " + availableCores + " for all cores): ");
-            config.setThreads(Math.max(1, Math.min(threads, availableCores * 2))); // Limit to reasonable range
-        } else {
-            config.setThreads(1); // Single thread
-        }
     }
     
     /**
@@ -642,7 +620,6 @@ public class BenchmarkController {
         private int forks = 1;
         private int warmupIterations = 3;
         private int measurementIterations = 5;
-        private int threads = 1;
 
         public String[] getDataSizes() { return dataSizes; }
         public void setDataSizes(String[] dataSizes) { this.dataSizes = dataSizes; }
@@ -664,8 +641,5 @@ public class BenchmarkController {
 
         public int getMeasurementIterations() { return measurementIterations; }
         public void setMeasurementIterations(int measurementIterations) { this.measurementIterations = measurementIterations; }
-
-        public int getThreads() { return threads; }
-        public void setThreads(int threads) { this.threads = threads; }
     }
 }
