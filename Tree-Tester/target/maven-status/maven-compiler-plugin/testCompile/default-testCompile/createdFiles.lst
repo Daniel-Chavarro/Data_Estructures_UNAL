@@ -1,6 +1,0 @@
-org\tree_tester\model\concrete\Heap\DaryMaxHeapTest.class
-org\tree_tester\model\concrete\Tree\AVLTreeTest.class
-org\tree_tester\model\concrete\Heap\DaryMinHeapTest.class
-org\tree_tester\model\factories\TreeFactoryTest.class
-org\tree_tester\model\concrete\Tree\BinarySearchTreeTest.class
-org\tree_tester\model\concrete\Tree\NodeTest.class

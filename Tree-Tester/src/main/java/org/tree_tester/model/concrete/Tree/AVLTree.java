@@ -3,19 +3,17 @@ package org.tree_tester.model.concrete.Tree;
 import org.tree_tester.model.Abstract.Tree;
 import org.tree_tester.model.concrete.TreeType;
 
-
-
 /**
- * AVL Tree implementation.
- * This class provides methods to insert elements, search for elements,
- * delete elements, and perform various tree traversals.
+ * AVL Tree implementation - a self-balancing binary search tree.
+ * In an AVL tree, the heights of the two child subtrees of any node differ by at most one.
+ * If at any time they differ by more than one, rebalancing is performed to restore this property.
  *
- * @param <T> the type of elements stored in the AVL tree, must be Comparable
+ * @param <T> the type of elements stored in the AVL tree, must implement Comparable
  */
 public class AVLTree<T extends Comparable<T>> extends Tree<T> {
 
     /**
-     * Constructor to create an empty AVL tree.
+     * Constructs an empty AVL tree.
      */
     public AVLTree() {
         super();
@@ -67,7 +65,7 @@ public class AVLTree<T extends Comparable<T>> extends Tree<T> {
      */
     @Override
     public boolean delete(T data) {
-        boolean[] deleted = {false}; // Array para simular paso por referencia
+        boolean[] deleted = {false};
         root = delete(root, data, deleted);
         return deleted[0];
     }
@@ -120,13 +118,11 @@ public class AVLTree<T extends Comparable<T>> extends Tree<T> {
         } else if (data.compareTo(node.data) > 0) {
             node.right = deleteSuccessor(node.right, data);
         } else {
-            // Found the successor to delete - don't decrement size
             if (node.left == null) {
                 return node.right;
             } else if (node.right == null) {
                 return node.left;
             }
-            // This shouldn't happen as we're deleting the minimum (leftmost) node
             Node<T> minNode = findMin(node.right);
             node.data = minNode.data;
             node.right = deleteSuccessor(node.right, minNode.data);

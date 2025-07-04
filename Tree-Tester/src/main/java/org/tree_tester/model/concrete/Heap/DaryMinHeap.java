@@ -4,17 +4,28 @@ import org.tree_tester.model.Abstract.Heap;
 
 import java.util.List;
 
+/**
+ * D-ary Min Heap implementation where each parent node is less than or equal to its children.
+ * The degree parameter determines how many children each node can have.
+ *
+ * @param <T> the type of elements stored in the heap, must implement Comparable
+ */
 public class DaryMinHeap<T extends Comparable<T>> extends Heap<T> {
 
     /**
-     * Constructor for DaryMinHeap with a specified DEGREE.
+     * Constructs a D-ary min heap with the specified degree.
      *
-     * @param degree The number of children each node can have.
+     * @param degree the number of children each node can have
      */
     public DaryMinHeap(int degree) {
         super(degree);
     }
 
+    /**
+     * Heapifies down the element at the specified index to maintain the max-heap property.
+     *
+     * @param index The index of the element to heapify down.
+     */
     @Override
     protected void heapifyDown(int index) {
         int smallest = index;
@@ -31,9 +42,13 @@ public class DaryMinHeap<T extends Comparable<T>> extends Heap<T> {
             swap(index, smallest);
             heapifyDown(smallest);
         }
-
     }
 
+    /**
+     * Heapifies up the element at the specified index to maintain the max-heap property.
+     *
+     * @param index The index of the element to heapify up.
+     */
     @Override
     protected void heapifyUp(int index) {
         while (index > 0) {
@@ -46,6 +61,11 @@ public class DaryMinHeap<T extends Comparable<T>> extends Heap<T> {
         }
     }
 
+    /**
+     * Checks if the heap is a valid max-heap.
+     *
+     * @return true if the heap is valid, false otherwise
+     */
     @Override
     public boolean isValidHeap() {
         for (int i = 0; i < size; i++) {
@@ -60,6 +80,11 @@ public class DaryMinHeap<T extends Comparable<T>> extends Heap<T> {
         return true;
     }
 
+    /**
+     * Builds the heap from a list of elements.
+     *
+     * @param data The list of elements to build the heap from.
+     */
     @Override
     public void buildHeap(List<T> data) {
         heap.clear();
@@ -70,6 +95,11 @@ public class DaryMinHeap<T extends Comparable<T>> extends Heap<T> {
         }
     }
 
+    /**
+     * Gets the type of the heap.
+     *
+     * @return A string representing the type of the heap (e.g., "MinHeap", "MaxHeap").
+     */
     @Override
     public String getHeapType() {
         return DEGREE + "-ary Min Heap";

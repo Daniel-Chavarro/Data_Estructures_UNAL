@@ -3,10 +3,16 @@ package org.tree_tester.model.concrete.Tree;
 import org.tree_tester.model.Abstract.Tree;
 import org.tree_tester.model.concrete.TreeType;
 
-public class BinarySearchTree <T extends Comparable<T>> extends Tree<T> {
+/**
+ * Binary Search Tree implementation where left children are smaller than parent nodes
+ * and right children are greater than parent nodes. Does not perform any self-balancing.
+ *
+ * @param <T> the type of elements stored in the tree, must implement Comparable
+ */
+public class BinarySearchTree<T extends Comparable<T>> extends Tree<T> {
+
     /**
      * Constructs an empty binary search tree.
-     * The root is initialized to null, indicating that the tree is empty.
      */
     public BinarySearchTree() {
         super();
@@ -33,7 +39,7 @@ public class BinarySearchTree <T extends Comparable<T>> extends Tree<T> {
      * @return The updated node after insertion.
      */
     private Node<T> insert(Node<T> node, T data, boolean[] inserted) {
-        if (node == null){
+        if (node == null) {
             inserted[0] = true;
             size++;
             return new Node<>(data, null);

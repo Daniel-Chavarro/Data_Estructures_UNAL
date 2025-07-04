@@ -4,12 +4,18 @@ import org.tree_tester.model.Abstract.Heap;
 
 import java.util.List;
 
+/**
+ * D-ary Max Heap implementation where each parent node is greater than or equal to its children.
+ * The degree parameter determines how many children each node can have.
+ *
+ * @param <T> the type of elements stored in the heap, must implement Comparable
+ */
 public class DaryMaxHeap<T extends Comparable<T>> extends Heap<T> {
 
     /**
-     * Constructor for DaryMaxHeap with a specified DEGREE.
+     * Constructs a D-ary max heap with the specified degree.
      *
-     * @param degree The number of children each node can have.
+     * @param degree the number of children each node can have
      */
     public DaryMaxHeap(int degree) {
         super(degree);
