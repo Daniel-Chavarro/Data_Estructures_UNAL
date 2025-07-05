@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Locale;
 
 /**
  * Quick test to verify CSV generation works correctly.
@@ -97,7 +98,7 @@ public class QuickCSVTest {
                 String mode = result.getParams().getMode().shortLabel();
                 int forks = result.getParams().getForks();
 
-                writer.write(String.format("%s,%s,%s,%s,%d,%.3f,%.3f,%s\n",
+                writer.write(String.format(Locale.US,"%s,%s,%s,%s,%d,%.3f,%.3f,%s\n",
                         methodName, dataSize, treeType, mode, forks, score, error, unit));
             }
         } catch (IOException e) {

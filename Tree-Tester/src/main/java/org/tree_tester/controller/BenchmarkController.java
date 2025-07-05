@@ -524,7 +524,8 @@ public class BenchmarkController {
                 String mode = result.getParams().getMode().shortLabel();
                 int forks = result.getParams().getForks();
 
-                writer.write(String.format("%s,%s,%s,%s,%d,%.3f,%.3f,%s\n",
+                // Use Locale.US to ensure decimal point instead of comma
+                writer.write(String.format(Locale.US, "%s,%s,%s,%s,%d,%.3f,%.3f,%s\n",
                         methodName, dataSize, treeType, mode, forks, score, error, unit));
             }
         } catch (IOException e) {
@@ -582,7 +583,8 @@ public class BenchmarkController {
                 String mode = result.getParams().getMode().shortLabel();
                 int forks = result.getParams().getForks();
 
-                writer.write(String.format("%s,%s,%s,%s,%s,%d,%.3f,%.3f,%s\n",
+                // Use Locale.US to ensure decimal point instead of comma
+                writer.write(String.format(Locale.US, "%s,%s,%s,%s,%s,%d,%.3f,%.3f,%s\n",
                         methodName, dataSize, heapType, degree, mode, forks, score, error, unit));
             }
         } catch (IOException e) {
